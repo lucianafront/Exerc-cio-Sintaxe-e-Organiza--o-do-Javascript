@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário</title>
+<style>
+    /* Estilos apenas para melhorar a aparência */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    form, table {
+        margin-right: 20px;
+    }
+    table {
+    
+        border-collapse: collapse;
+        width: 300px;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+    
+    <div>
+
+        <form id="myForm">
+            <h2>Formulário</h2>
+            <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome"><br><br>
+        <label for="sobrenome">Sobrenome:</label><br>
+        <input type="text" id="sobrenome" name="sobrenome"><br><br>
+        <label for="idade">Idade:</label><br>
+        <input type="text" id="idade" name="idade"><br><br>
+        
+        <label for="cidade">Cidade:</label><br>
+        <select id="cidade" name="cidade">
+            <option value="São Paulo">São Paulo</option>
+            <option value="Rio de Janeiro">Rio de Janeiro</option>
+            <option value="Belo Horizonte">Belo Horizonte</option>
+        </select><br><br>
+        
+        <label>Gênero:</label><br>
+        <input type="radio" id="genero1" name="genero" value="Masculino">
+        <label for="genero1">Masculino</label><br>
+        <input type="radio" id="genero2" name="genero" value="Feminino">
+        <label for="genero2">Feminino</label><br><br>
+        
+        <label for="interesses">Interesses:</label><br>
+        <input type="checkbox" id="interesse1" name="interesses" value="Esportes">
+        <label for="interesse1">Esportes</label><br>
+        <input type="checkbox" id="interesse2" name="interesses" value="Tecnologia">
+        <label for="interesse2">Tecnologia</label><br>
+        <input type="checkbox" id="interesse3" name="interesses" value="Música">
+        <label for="interesse3">Música</label><br><br>
+        
+        <input type="submit" value="Enviar" id="submitButton">
+    </form>
+
+</div>
+<div>
+
+    
+    <h2>Respostas</h2>
+    <table id="responseTable">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Idade</th>
+                <th>Cidade</th>
+                <th>Gênero</th>
+                <th>Interesses</th>
+            </tr>
+        </thead>
+        <tbody id="responseBody">
+            <!-- Aqui serão inseridas as respostas do formulário -->
+        </tbody>
+    </table>
+</div>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita que o formulário seja enviado normalmente
+    
+            // Verifica se todos os campos obrigatórios estão preenchidos
+            var nome = document.getElementById("nome").value.trim();
+            var sobrenome = document.getElementById("sobrenome").value.trim();
+            var idade = document.getElementById("idade").value.trim();
+            var cidade = document.getElementById("cidade").value.trim();
+            var genero = document.querySelector('input[name="genero"]:checked');
+            var interesses = document.querySelectorAll('input[name="interesses"]:checked');
+          
+    
+            if (nome === ''  || sobrenome=== '' || idade === '' || cidade === '' || genero === null || interesses.length === 0) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+    
+            // Simula um fake loading
+            document.getElementById("submitButton").value = "Carregando...";
+            setTimeout(function() {
+                // Obtém os valores do formulário
+                var generoValue = genero.value; // Se o campo de gênero está preenchido, captura o valor
+                var interessesValues = [];
+                interesses.forEach(function(interesse) {
+                    interessesValues.push(interesse.value);
+        
+                });
+    
+                // Cria uma nova linha na tabela com os valores do formulário
+                var newRow = document.createElement("tr");
+                newRow.innerHTML = "<td>" + nome + "</td><td>" + sobrenome + "</td><td>" + idade + "</td><td>" + cidade + "</td><td>" + generoValue + "</td><td>" + interessesValues.join(", ") + "</td>";
+                document.getElementById("responseBody").appendChild(newRow);
+    
+                // Limpa os campos do formulário
+                document.getElementById("myForm").reset();
+    
+                // Restaura o texto do botão
+                document.getElementById("submitButton").value = "Enviar";
+            }, 2000); // Tempo de simulação do carregamento (2 segundos)
+        });
+    </script>
